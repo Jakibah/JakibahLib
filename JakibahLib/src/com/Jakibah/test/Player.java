@@ -2,6 +2,7 @@ package com.Jakibah.test;
 
 import java.awt.image.BufferedImage;
 
+import com.Jakibah.Main;
 import com.Jakibah.Window;
 
 public class Player {

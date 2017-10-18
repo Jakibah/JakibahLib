@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -16,6 +17,8 @@ public abstract class Window {
 	private String title;
 	private static Graphics g;
 	private static BufferStrategy buffer;
+	private static int Xtrans;
+	private static int Ytrans;
 
 	public Window(String title, float width, float height) {
 		this.setWidth(width);
@@ -35,6 +38,12 @@ public abstract class Window {
 
 	public static void Prepare() {
 		Main.canvas.createBufferStrategy(2);
+		
+	}
+	
+	public static void Translate(int x, int y){
+		Xtrans = x;
+		Ytrans = y;
 	}
 
 	public static void StartDrawing() {
@@ -48,49 +57,37 @@ public abstract class Window {
 		g.dispose();
 		buffer.show();
 	}
-
-	public static void DrawTex(BufferedImage image, int x, int y, boolean lighted) {
-		for (int i = 0; i < image.getWidth(); i++) {
-			for (int j = 0; j < image.getHeight(); j++) {
-				int color = image.getRGB(i, j);
-				
-				int red = (color & 0x00ff0000) >> 16;
-				int green = (color & 0x0000ff00) >> 8;
-				int blue = (color & 0x000000ff);
-				int alpha = (color>>24) & 0xff;
-				if(lighted){
-					int lamp = 0;
-					for(Light l : Main.app.lights){
-						int xdist = x+i-l.getX();
-						int ydist = y+i-l.getY();
-						
-						if(xdist >  -l.getRadius() && xdist < l.getRadius()){
-							if(ydist >  -l.getRadius() && ydist < l.getRadius()){
-								lamp = lamp + l.getBrightness();
-							}
-						}
-					}
-					red = red - Light.getDayLight() + lamp;
-					green = green - Light.getDayLight() + lamp;
-					blue = blue - Light.getDayLight()+ lamp;
-					
-					if(red < 0){
-						red = 0;
-					}
-					if(green < 0){
-						green = 0;
-					}
-					if(blue < 0){
-						blue = 0;
-					}
-				}
-				Color c = new Color(red, green, blue, alpha);
-				g.setColor(c);
-				g.fillRect((i + x) - Player.getX() + Main.canvas.getWidth() / 2 - 16, (j + y) - Player.getY() + Main.canvas.getHeight() / 2 - 16, 1, 1);
-				
-			}
-		}
+	public static void DrawTex(BufferedImage image, int x, int y , boolean lighted) {
+		g.drawImage(image, (x) - Xtrans + Main.canvas.getWidth() / 2 - 16,
+				(y) - Ytrans + Main.canvas.getHeight() / 2 - 16, 32, 32, Main.canvas);
+		
 	}
+
+	/*
+	 * public static void DrawTex(BufferedImage image, int x, int y, boolean
+	 * lighted) { for (int j = 0; j < image.getHeight(); j++) { for (int i = 0;
+	 * i < image.getWidth(); i++) { int color = image.getRGB(i, j);
+	 * 
+	 * int red = (color & 0x00ff0000) >> 16; int green = (color & 0x0000ff00) >>
+	 * 8; int blue = (color & 0x000000ff); int alpha = (color>>24) & 0xff;
+	 * if(lighted){ int lamp = 0; for(Light l : Main.app.lights){ int xdist =
+	 * x+i-l.getX(); int ydist = y+j-l.getY();
+	 * 
+	 * if(xdist > -l.getRadius() && xdist < l.getRadius()){ if(ydist >
+	 * -l.getRadius() && ydist < l.getRadius()){ lamp = lamp +
+	 * l.getBrightness(); } } } red = red - Light.getDayLight() + lamp; green =
+	 * green - Light.getDayLight() + lamp; blue = blue - Light.getDayLight()+
+	 * lamp;
+	 * 
+	 * if(red < 0){ red = 0; } if(green < 0){ green = 0; } if(blue < 0){ blue =
+	 * 0; } } Color c = new Color(red, green, blue, alpha); g.setColor(c);
+	 * //g.fillRect((i + x) - Player.getX() + Main.canvas.getWidth() / 2 - 16,
+	 * (j + y) - Player.getY() + Main.canvas.getHeight() / 2 - 16, 1, 1);
+	 * g.drawLine((i + x) - Player.getX() + Main.canvas.getWidth() / 2 - 16,(j +
+	 * y) - Player.getY() + Main.canvas.getHeight() / 2 - 16, (i + x) -
+	 * Player.getX() + Main.canvas.getWidth() / 2 - 16, (j + y) - Player.getY()
+	 * + Main.canvas.getHeight() / 2 - 16); } } }
+	 */
 
 	public float getWidth() {
 		return width;

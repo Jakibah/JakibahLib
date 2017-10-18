@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.Jakibah.App;
 import com.Jakibah.Light;
+import com.Jakibah.LightType;
 import com.Jakibah.Main;
 import com.Jakibah.Window;
 
@@ -11,7 +12,7 @@ public class TestApp extends Window implements App {
 	
 
 	public ArrayList<Light> lights = new ArrayList<Light>();
-	Light light = new Light(0, 0, 100, 50);
+	Light light = new Light(0, 0, 100, 50, LightType.Circle);
 	
 	public TestApp(){
 		super("Test", 800, 600);
@@ -32,10 +33,11 @@ public class TestApp extends Window implements App {
 	
 	public void Update(){
 		Window.StartDrawing();
+		Window.Translate(Player.getX(), Player.getY());
 		//Draw after this
 		for(int i = 0; i < 10; i++){
 			for(int j =0; j < 10; j++){
-		Window.DrawTex(Player.getTexture(), 32*i, 32*j, true);
+				Window.DrawTex(Player.getTexture(), i*32, j*32, true);
 		}
 		}
 		Player.Update();

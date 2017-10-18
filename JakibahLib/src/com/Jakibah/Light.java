@@ -3,17 +3,18 @@ package com.Jakibah;
 public class Light {
 	
 	private int x, y, radius, brightness;
+	private LightType type;
 	
-	public Light(int x, int y, int radius, int brightness){
+	public Light(int x, int y, int radius, int brightness, LightType type){
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
 		this.brightness = brightness;
+		this.type = type;
 	}
 	
 	public static int getDayLight(){
-		int toreturn = 250;
-		
+		int toreturn = 150;
 		return toreturn;
 	}
 
