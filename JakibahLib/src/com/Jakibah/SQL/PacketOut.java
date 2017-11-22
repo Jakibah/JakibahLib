@@ -12,13 +12,13 @@ public class PacketOut extends Packet{
 		
 	}
 	
-	public void Send(){
+	public void Send(String Username, String Password){
 		try {
 			if(lastIP.equals("Nothing")){
-				lastConnection = DriverManager.getConnection("jdbc:mysql://" + this.getIP(), "Iakovos", "IPe20012002");
+				lastConnection = DriverManager.getConnection("jdbc:mysql://" + this.getIP(), Username, Password);
 				lastIP = "jdbc:mysql://" + this.getIP();
 			}else if(!lastIP.equals("jdbc:mysql://" + this.getIP())){
-				lastConnection = DriverManager.getConnection("jdbc:mysql://" + this.getIP(), "Iakovos", "IPe20012002");
+				lastConnection = DriverManager.getConnection("jdbc:mysql://" + this.getIP(),  Username, Password);
 				lastIP = "jdbc:mysql://" + this.getIP();
 				}
 			Statement mystmt = lastConnection.createStatement();

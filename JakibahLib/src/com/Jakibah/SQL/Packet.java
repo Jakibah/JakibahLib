@@ -8,7 +8,6 @@ public abstract class Packet {
 	protected static Connection lastConnection;
 	protected static String lastIP = "Nothing";
 	
-	public abstract void Send();
 	
 	private String IP, Command;
 	
@@ -33,5 +32,8 @@ public abstract class Packet {
 	public void setCommand(String command) {
 		Command = command;
 	}
+
+
+	public abstract void Send(String Username, String Password);
 	
 }
