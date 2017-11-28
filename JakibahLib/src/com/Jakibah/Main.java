@@ -4,7 +4,8 @@ import java.awt.Canvas;
 
 import javax.swing.JFrame;
 
-import com.Jakibah.Input.Keyboard;
+import com.Jakibah.input.Keyboard;
+import com.Jakibah.input.Mouse;
 import com.Jakibah.test.TestApp;
 
 public class Main {
@@ -18,6 +19,15 @@ public class Main {
 	public static int fps;
 	public static long fpsstart = 0;
 	public static int fpslasts = 0;
+	public static Keyboard key;
+	
+	
+	
+	//animations
+	//rotation
+	//particles
+	//collision
+	//text
 
 	public static void Boot(TestApp app) {
 		Main.app = app;
@@ -45,15 +55,23 @@ public class Main {
 		frame.setTitle(app.getTitle());
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		canvas.requestFocus();
 		app.Start();
-		Keyboard.Init();
+		key = new Keyboard();
+		canvas.addKeyListener(key);
+		Mouse mouse = new Mouse();
+		canvas.addMouseListener(mouse);
+		canvas.addMouseMotionListener(mouse);
+		
+		
+		
 		while (running) {
 			if(fpsstart == 0){
 				fpsstart = System.currentTimeMillis();
 			}
 			long starttime = System.currentTimeMillis();
 			
-			
+			key.Update();
 			Update();
 			
 			
